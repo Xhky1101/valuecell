@@ -13,9 +13,7 @@ WORKDIR /app
 ARG RAILWAY_SERVICE_ID
 
 # 3. Install system dependencies.
-# - Includes 'curl' if needed for other scripts.
-# - Cache ID is formatted with the SERVICE_ID.
-RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/apt-cache,target=/var/cache/apt \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-apt-cache,target=/var/cache/apt \
     apt-get update && apt-get install -y curl \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
@@ -23,16 +21,15 @@ RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/apt-cache,t
 # 4. Copy dependency files first for better caching
 COPY uv.lock pyproject.toml ./
 
-# 5. Install Python dependencies (external packages).
-# - Cache ID is formatted with the SERVICE_ID.
-RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/uv-cache,target=/root/.cache/uv \
+# 5. Install Python dependencies
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-uv-cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project
 
 # 6. Copy the rest of the application code.
 COPY . /app
 
-# 7. Install the project itself (if it has an installable package)
-RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/uv-cache,target=/root/.cache/uv \
+# 7. Install the project
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-uv-cache,target=/root/.cache/uv \
     uv sync --frozen
 
 # 8. Set up the Environment
