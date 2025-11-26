@@ -25,14 +25,14 @@ COPY uv.lock pyproject.toml ./
 
 # 5. Install Python dependencies (external packages).
 # - Cache ID is formatted with the SERVICE_ID.
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/uv-cache,target=/root/.cache/uv \
+RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/uv-cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project
 
 # 6. Copy the rest of the application code.
 COPY . /app
 
 # 7. Install the project itself (if it has an installable package)
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/uv-cache,target=/root/.cache/uv \
+RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/uv-cache,target=/root/.cache/uv \
     uv sync --frozen
 
 # 8. Set up the Environment
