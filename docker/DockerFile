@@ -15,7 +15,7 @@ ARG RAILWAY_SERVICE_ID
 # 3. Install system dependencies.
 # - Includes 'curl' if needed for other scripts.
 # - Cache ID is formatted with the SERVICE_ID.
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/apt-cache,target=/var/cache/apt \
+RUN --mount=type=cache,id=s/${108df745-ed7f-48c4-894e-b34ba0ff84df}-/apt-cache,target=/var/cache/apt \
     apt-get update && apt-get install -y curl \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
