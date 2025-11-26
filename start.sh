@@ -47,7 +47,7 @@ ensure_tool() {
     Linux)
       info "Detected Linux, auto-installing $tool_name..."
       if [[ "$tool_name" == "bun" ]]; then
-        curl -fsSL https://bun.sh/install | bash
+        wget -qO- https://bun.sh/install | bash
         # Add Bun default install dir to PATH (current process only)
         if ! command_exists bun && [[ -x "$HOME/.bun/bin/bun" ]]; then
           export PATH="$HOME/.bun/bin:$PATH"
